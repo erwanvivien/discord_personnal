@@ -87,6 +87,15 @@ def mappings_get(guild_id: int) -> list:
     return res
 
 
+def mappings_exists(guild_id: int, name: str) -> list:
+    sql = "SELECT mappings.name, mappings.path, mappings.definition " + \
+        "FROM mappings WHERE mappings.discord_id = ? AND mappings.name = ?"
+    args = [guild_id, name]
+
+    res = exec(sql, args)
+    return res
+
+
 def mappings_set(guild_id: int, name: str, path: str, definition: str = "") -> None:
     sql = "INSERT INTO mappings VALUES (?, ?, ?, ?, ?)"
     args = [None, guild_id, name, path, definition]
