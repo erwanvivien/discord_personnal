@@ -74,6 +74,10 @@ async def mappings(self, message, args):
     mappings_text = "\n".join(
         [f"`{e[0]}`" + (f": {e[2]}" if e[2] else "") for e in mappings])
 
+    if not mappings_text:
+        mappings_text = "You don't have any mappings for now.\n" +\
+            "See `!!help` or `!!map` to add some"
+
     await disc.send_message(message, title="Your mappings", desc=mappings_text)
 
 
