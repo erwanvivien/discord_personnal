@@ -19,9 +19,7 @@ async def map(self, message, args):
                                         "Please visit ... if you want to have unlimited mappings")
 
     bind_to = args[0].lower()
-
     msg = await disc.send_message(message, title="Starting to download", desc="")
-
     folder = f"assets/{guild_id}"
     if not os.path.exists(folder):  # Creates the dir for the said guild
         os.mkdir(folder)
@@ -48,11 +46,9 @@ async def unmap(self, message, args):
         return
 
     name = args[0].lower()
-
-    res = db.mappings_get(guild_id)
-    mappings = {e[0]: e[1] for e in res}
-    if not name in mappings:
-        return await disc.send_message(message, title="Error 😱", desc=f"{name} was not a valid mapping")
+    res = db.mappings_exists(guild_id, name)
+    if not res:
+        return await disc.send_message(message, title="Error", desc=f"{name} was not a valid mapping")
 
     db.mappings_rm(guild_id, name)
     await disc.send_message(message, title="Success !", desc=f"You have successfully unmapped {name}")
@@ -69,10 +65,16 @@ async def mappings(self, message, args):
 
 async def define(self, message, args):
     guild_id = message.guild.id
-    if not args or len(args) <= 1:
-        return
+    if not args:
+        return await disc.error_message(message, title="Error", desc="No arguments were found")
+    if len(args) <= 1:
+        return await disc.error_message(message, title="Error", desc="No definition was given")
 
-    name = args[0]
+    name = args[0].lower()
+    res = db.mappings_exists(guild_id, name)
+    if not res:
+        return await disc.send_message(message, title="Error", desc=f"{name} was not a valid mapping")
+
     definition = " ".join(args[1:])
 
     db.mappings_def(guild_id, name, definition)
@@ -88,11 +90,9 @@ async def send(self, message, args):
     if not args:
         return
 
-    send = args[0]
-
-    res = db.mappings_get(guild_id)
-    mappings = {e[0]: e[1] for e in res}
-    if not send in mappings:
+    send = args[0].lower()
+    res = db.mappings_exists(guild_id, send)
+    if not res:
         return
 
     path = mappings[send]
