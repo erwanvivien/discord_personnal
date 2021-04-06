@@ -14,7 +14,7 @@ async def map(self, message, args):
         return
 
     nb_mappings = len(db.mappings_get(guild_id))
-    if nb_mappings > 5 and db.guild_premium(guild_id) <= date.datetime.now().timestamp():
+    if nb_mappings >= 5 and db.guild_premium(guild_id) <= date.datetime.now().timestamp():
         return await disc.error_message(message, title="Too many mappings", desc="It seems that your premium subscription has expired\n" +
                                         "Please visit ... if you want to have unlimited mappings")
 
