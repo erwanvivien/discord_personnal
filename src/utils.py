@@ -53,3 +53,7 @@ if not os.path.exists("db"):
     os.mkdir("db")
     f = open(LOG_FILE, "w")
     f.close()
+
+# Create the assets dir if non-existent
+if not os.path.exists("assets"):
+    os.mkdir("assets")
