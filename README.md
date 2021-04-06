@@ -23,3 +23,12 @@ If you want that every time you type `!!cat` a cat appears, you just have to use
 
 `!!map cat` with the appropriate image as attachment, this one for example
 <img src="https://user-images.githubusercontent.com/44021072/113632193-f9686400-966a-11eb-89de-94a0b533eaa1.png" data-canonical-src="https://user-images.githubusercontent.com/44021072/113632193-f9686400-966a-11eb-89de-94a0b533eaa1.png" width="533" height="400"/>
+
+### Map
+![image](https://user-images.githubusercontent.com/44021072/113729182-10549800-96f7-11eb-96af-1b2fbb2d8046.png)
+
+### Use
+![image](https://user-images.githubusercontent.com/44021072/113729541-66c1d680-96f7-11eb-926e-d33ce01f2943.png)
+
+### Mappings
+![image](https://user-images.githubusercontent.com/44021072/113729577-6de8e480-96f7-11eb-8235-0e6528919078.png)
