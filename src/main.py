@@ -43,17 +43,24 @@ class Client(discord.Client):
         # Get Discord Nick if existant or discord Name
         name = disc.author_name(message.author, False)
 
-        # Runs command if it's a known command
-        if cmd != "!!" and cmd in CMDS:
-            utils.log("on_message", "Command execution",
-                      f"{name} from discord {message.guild.id} issued {cmd} command. <{args}>")
+        guild_id = message.guild.id
+        if not db.guild_exists(guild_id):
+            utils.log("on_message", "Guild added",
+                      f"Guild {guild_id} has been added")
+            db.guild_insert(guild_id)
 
-            await CMDS[cmd](self, message, args)
-        elif cmd.startswith("!!"):
-            args = [cmd[2:]] + args
-            utils.log("on_message", "Command execution",
-                      f"{name} from discord {message.guild.id} issued !! command. <{args}>")
-            await CMDS['!!'](self, message, args)
+        utils.log("on_message", "Command execution",
+                  f"{name} from discord {guild_id} issued !! command. <{args}>")
+
+        # Runs command if it's a known command
+        if cmd != "!!" and cmd in commands.CMDS:
+            return await commands.CMDS[cmd](self, message, args)
+        # Runs admin command if it's a known command
+        if author_id in utils.DEV_IDS and cmd in commands.ADMIN_CMDS:
+            return await commands.ADMIN_CMDS[cmd](self, message, args)
+
+        args = [cmd[2:]] + args
+        await commands.CMDS['!!'](self, message, args)
 
 
 db.create()  # Will setup the database
