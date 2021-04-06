@@ -29,16 +29,25 @@ async def map(self, message, args):
     if not os.path.exists(folder):  # Creates the dir for the said guild
         os.mkdir(folder)
 
-    # attach_id = message.attachments[0].id # Unsued ID
-    attach_name = message.attachments[0].filename
-    attach_url = message.attachments[0].url
+    if message.attachments:
+        # attach_id = message.attachments[0].id # Unsued ID
+        attach_name = message.attachments[0].filename
+        attach_url = message.attachments[0].url
 
-    extension = attach_name.split('.')[-1]
-    response = requests.get(attach_url)
+        extension = attach_name.split('.')[-1]
+        response = requests.get(attach_url)
+
+        content = response.content
+    else:
+        if len(args) <= 1:
+            return await disc.edit_message(msg, title="Error", desc="No text nor attachments were found")
+        extension = "txt"
+        content = str.encode(" ".join(args[1:]))
+
     filename = f"{folder}/{bind_to}.{extension}"
 
     file = open(filename, "wb")
-    file.write(response.content)
+    file.write(content)
     file.close()
 
     db.mappings_set(guild_id, bind_to, filename)
@@ -100,8 +109,11 @@ async def send(self, message, args):
     if not res:
         return
 
-    path = mappings[send]
-    await disc.send_file(message, path)
+    path = res[0][1]
+    if path.split(".")[-1] == "txt":
+        await message.channel.send(utils.get_content(path))
+    else:
+        await disc.send_file(message, path)
 
 
 async def upgrade(self, message, args):
