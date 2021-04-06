@@ -63,11 +63,20 @@ async def mappings(self, message, args):
     mappings = db.mappings_get(guild_id)
     mappings_text = "\n".join(
         [f"`{e[0]}`" + (f": {e[2]}" if e[2] else "") for e in mappings])
-    print(mappings_text)
+
+    await disc.send_message(message, title="Your mappings", desc=mappings_text)
 
 
 async def define(self, message, args):
-    pass
+    guild_id = message.guild.id
+    if not args or len(args) <= 1:
+        return
+
+    name = args[0]
+    definition = " ".join(args[1:])
+
+    db.mappings_def(guild_id, name, definition)
+    await disc.send_message(message, title="Definition set", desc=f"The mapping {name} has been defined to `{definition}`")
 
 
 async def help(self, message, args):
