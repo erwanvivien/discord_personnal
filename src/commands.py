@@ -6,12 +6,17 @@ import datetime as date
 
 import discord_utils as disc
 import database as db
+import utils
 
 
 async def map(self, message, args):
     guild_id = message.guild.id
     if not args:
-        return
+        return await disc.error_message(message, title="Error", desc="No arguments were found")
+
+    if_force = "--force" in args
+    if if_force:
+        args.remove("--force")
 
     nb_mappings = len(db.mappings_get(guild_id))
     if nb_mappings >= 5 and db.guild_premium(guild_id) <= date.datetime.now().timestamp():
@@ -37,13 +42,13 @@ async def map(self, message, args):
     file.close()
 
     db.mappings_set(guild_id, bind_to, filename)
-    await disc.edit_message(msg, title="Success !", desc=f"The file {attach_name} has been bound to {bind_to}.{extension}")
+    await disc.edit_message(msg, title="Success !", desc=f"A new mapping has been bound to {bind_to}.{extension}")
 
 
 async def unmap(self, message, args):
     guild_id = message.guild.id
     if not args:
-        return
+        return await disc.error_message(message, title="Error", desc="No arguments were found")
 
     name = args[0].lower()
     res = db.mappings_exists(guild_id, name)
