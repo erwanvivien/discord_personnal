@@ -48,7 +48,7 @@ def guild_insert(guild_id: int) -> None:
 
 
 def guild_premium(guild_id: int) -> float:
-    sql = "SELECT guilds.premium FROM guilds WHERE guilds.id = ? AND guilds.premium <> 0"
+    sql = "SELECT guilds.premium FROM guilds WHERE guilds.id = ?"
     args = [guild_id]
 
     res = exec(sql, args)[0][0]
