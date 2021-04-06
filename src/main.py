@@ -45,12 +45,17 @@ class Client(discord.Client):
 
         guild_id = message.guild.id
         if not db.guild_exists(guild_id):
+            db.guild_insert(guild_id)
             utils.log("on_message", "Guild added",
                       f"Guild {guild_id} has been added")
-            db.guild_insert(guild_id)
+
+            # db.guild_premium_add(guild_id, 7)
+            # await disc.send_message(message, title="Surprise !", desc="I have seen it's your first time using my bot 😉\n" +
+            #                         "Thanks a lot ❤ ! I have decided to give you 7 days of free premium use !\n" +
+            #                         "Enjoy your free mappings !")
 
         utils.log("on_message", "Command execution",
-                  f"{name} from discord {guild_id} issued !! command. <{args}>")
+                  f"{name} from discord {guild_id} issued {cmd} command. <{args}>")
 
         # Runs command if it's a known command
         if cmd != "!!" and cmd in commands.CMDS:
