@@ -9,6 +9,7 @@ You can bind a command to a message / file, any message, any file.
 ### Mappings
 
 - [`!!map <mapping-name>`](https://github.com/erwanvivien/discord_personnal#mappings): It maps the file sent to the mapping-name. ⚠️ This needs an attached file
+- [`!!map <mapping-name>` any message](https://github.com/erwanvivien/discord_personnal#mappings): It maps a message to the mapping-name.
 - [`!!define <mapping-name> any desc ...`](https://github.com/erwanvivien/discord_personnal#mappings): It adds a description to the said mapping
 - [`!!mappings`](https://github.com/erwanvivien/discord_personnal#mappings): Displays all mappings
 - [`!!<mapping-name>`](https://github.com/erwanvivien/discord_personnal#mappings): Sends back the file mapped
