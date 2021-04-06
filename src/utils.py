@@ -48,6 +48,31 @@ def log(fctname, error, message):
     f.close()
 
 
+def clean_dir(subpath, dir, db):
+    try:
+        res = db.mappings_get(int(dir))
+    except:
+        os.removedirs(subpath + dir)
+        return
+
+    cur_path = subpath + dir + os.sep
+
+    mappings = [e[1].split("/")[-1] for e in res]
+
+    for _, _, files in os.walk('assets'):
+        for f in files:
+            if not f in mappings:
+                os.remove(cur_path + f)
+                print("removed", cur_path + f)
+
+
+def cleanup():
+    import database as db
+    for subdir, dirs, _ in os.walk('assets'):
+        for d in dirs:
+            clean_dir(subdir + os.sep, d, db)
+
+
 # Creates the db dir and the log file if needed
 if not os.path.exists("db"):
     os.mkdir("db")

@@ -72,17 +72,24 @@ db.create()  # Will setup the database
 client = Client()  # Creates a client
 
 
-# async def cron():
-#     await client.wait_until_ready()
-#     while True:
-#         try:
-#             pass
-#         except Exception as e:
-#             pass
+async def cron():
+    await client.wait_until_ready()
+    last = datetime.datetime.now() - datetime.timedelta(weeks=1)
+    while True:
+        if last + datetime.timedelta(days=1) < datetime.datetime.now():
+            try:
+                print(" => CLEANING UP <= ")
+                utils.cleanup()
+                print(" => CLEANED UP <= ")
+            except Exception as e:
+                await disc.report(client, "Error in CRON loop", str(e))
+
+            last = datetime.datetime.now()
+        await asyncio.sleep(5 * 60)
 
 
 # Needed for async work
-# if token_file_name == "token":
-#     client.loop.create_task(cron())
+if token_file_name == "token":
+    client.loop.create_task(cron())
 
 client.run(token)
