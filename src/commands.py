@@ -203,7 +203,7 @@ async def upgrade(self, message, args):
         return await disc.error_message(message, title="Error", desc="Guild does not exist")
 
     db.guild_premium_add(guild_id, 31 * day_nb)
-    await disc.send_message(message, title="Success", desc=f"Guild {guild_id} has recieved {day_nb} day" + "s" if day_nb > 1 else "" + " !")
+    await disc.send_message(message, title="Success", desc=f"Guild {guild_id} has recieved {day_nb} day" + ("s" if day_nb > 1 else "") + " !")
 
 
 async def upgradeall(self, message, args):
@@ -225,7 +225,7 @@ async def upgradeall(self, message, args):
     for g in guilds:
         db.guild_premium_add(g, day_nb)
 
-    await disc.send_message(message, title="Success", desc=f"{len(guilds)} guild" + "s" if len(guilds) > 1 else "" + f" have recieved {day_nb} day" + "s" if day_nb > 1 else "" + " !")
+    await disc.send_message(message, title="Success", desc=f"{len(guilds)} guild" + ("s have" if len(guilds) > 1 else " has") + f" recieved {day_nb} day" + ("s" if day_nb > 1 else "") + " !")
 
 
 CMDS = {
