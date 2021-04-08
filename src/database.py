@@ -34,6 +34,18 @@ def create() -> None:
     exec(sql_create_mappings)
 
 
+def guild_get_all() -> list:
+    """Returns all guilds
+
+    Returns:
+        [list] -- Returns a list of all the guilds' id
+    """
+    sql = "SELECT guilds.id FROM guilds"
+
+    res = exec(sql)
+    return res
+
+
 def guild_exists(guild_id: int) -> list:
     """Checks in database if guild already exists
 
