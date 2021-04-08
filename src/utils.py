@@ -59,7 +59,7 @@ def clean_dir(subpath, dir, db):
 
     mappings = [e[1].split("/")[-1] for e in res]
 
-    for _, _, files in os.walk('assets'):
+    for _, _, files in os.walk(cur_path):
         for f in files:
             if not f in mappings:
                 os.remove(cur_path + f)
