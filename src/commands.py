@@ -33,7 +33,7 @@ async def map(self, message, args):
         return await disc.error_message(message, title="Too many mappings", desc="It seems that your premium subscription has expired\n" +
                                         "Please visit ... if you want to have unlimited mappings")
 
-    bind_to = args[0].lower()
+    bind_to = utils.sanitize(args[0])
     msg = await disc.send_message(message, title="Starting to download", desc="")
     folder = f"assets/{guild_id}"
     if not os.path.exists(folder):  # Creates the dir for the said guild
@@ -79,7 +79,7 @@ async def unmap(self, message, args):
     if not args:
         return await disc.error_message(message, title="Error", desc="No arguments were found")
 
-    name = args[0].lower()
+    name = utils.sanitize(args[0])
     res = db.mappings_exists(guild_id, name)
     if not res:
         return await disc.send_message(message, title="Error", desc=f"{name} was not a valid mapping")
@@ -128,7 +128,7 @@ async def define(self, message, args):
     if len(args) <= 1:
         return await disc.error_message(message, title="Error", desc="No definition was given")
 
-    name = args[0].lower()
+    name = utils.sanitize(args[0])
     res = db.mappings_exists(guild_id, name)
     if not res:
         return await disc.send_message(message, title="Error", desc=f"{name} was not a valid mapping")
@@ -169,7 +169,7 @@ async def send(self, message, args):
     if not args:
         return
 
-    send = args[0].lower()
+    send = utils.sanitize(args[0])
     res = db.mappings_exists(guild_id, send)
     if not res:
         return
@@ -193,11 +193,23 @@ async def upgrade(self, message, args):
         None
     """
 
-    pass
+    if not args or len(args) < 2:
+        return await disc.error_message(message, title="Error", desc="Usage: `GUILD_ID NB_DAYS`")
+
+    if not args[0].isnumeric() or not args[1].isnumeric():
+        return await disc.error_message(message, title="Error", desc="Usage: `GUILD_ID NB_DAYS`")
+
+    guild_id = int(args[0])
+    day_nb = int(args[1])
+    if not db.guild_exists(guild_id):
+        return await disc.error_message(message, title="Error", desc="Guild does not exist")
+
+    db.guild_premium_add(guild_id, 31 * day_nb)
+    await disc.send_message(message, title="Success", desc=f"Guild {guild_id} has recieved {day_nb} day" + "s" if day_nb > 1 else "" + " !")
 
 
 async def upgradeall(self, message, args):
-    """ADMIN COMMAND: Upgrades manually every discords for X months
+    """ADMIN COMMAND: Upgrades manually every discords for X days
 
     Arguments:
         self {discordClient} -- Needed
@@ -208,7 +220,17 @@ async def upgradeall(self, message, args):
         None
     """
 
-    pass
+    if not args or len(args) < 1 or not args[0].isnumeric():
+        return await disc.error_message(message, title="Error", desc="Usage: `NB_DAYS`")
+
+    day_nb = int(args[0])
+
+    guilds = db.guild_get_all()
+    guilds = [g[0] for g in guilds]
+    for g in guilds:
+        db.guild_premium_add(g, day_nb)
+
+    await disc.send_message(message, title="Success", desc=f"{len(guilds)} guild" + "s" if len(guilds) > 1 else "" + f" have recieved {day_nb} day" + "s" if day_nb > 1 else "" + " !")
 
 
 CMDS = {
@@ -225,4 +247,5 @@ CMDS = {
 
 ADMIN_CMDS = {
     "!!upgrade": upgrade,
+    "!!upgradeall": upgradeall,
 }
