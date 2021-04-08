@@ -15,8 +15,16 @@ BOT_IDS = [828710667984306200, 828710723529867264]  # Normal, Dev
 DEV_IDS = [289145021922279425]  # Me
 
 
-def get_content(file):
-    # Read file content
+def get_content(file: str):
+    """Gets the content of a file
+
+    Arguments:
+        file {str} -- Function name
+
+    Returns:
+        [str] -- The content of the file, as is
+    """
+
     try:
         file = open(file, "r")
         s = file.read()
@@ -26,12 +34,17 @@ def get_content(file):
         return ""
     return s
 
-# Logs every commands
 
+def log(fctname: str, error: str, message: str) -> None:
+    """This is used to print and log to a file a message
 
-def log(fctname, error, message):
-    """
-    Pretty printer for logs
+    Arguments:
+        fctname {str} -- Function name
+        error {str} -- Error tag
+        message {str} -- Error message, more specific
+
+    Returns:
+        None
     """
 
     now = datetime.datetime.now()
@@ -48,7 +61,18 @@ def log(fctname, error, message):
     f.close()
 
 
-def clean_dir(subpath, dir, db):
+def clean_dir(subpath: str, dir: str, db) -> None:
+    """Reccursive function that goes through all files and directories
+
+    Arguments:
+        subpath {str} -- The current path
+        dir {str} -- The directory / guild we are checking
+        db {import database} -- An imported db, always the same
+
+    Returns:
+        None
+    """
+
     try:
         res = db.mappings_get(int(dir))
     except:
@@ -66,7 +90,10 @@ def clean_dir(subpath, dir, db):
                 print("removed", cur_path + f)
 
 
-def cleanup():
+def cleanup() -> None:
+    """Main function to check if some assets are not used anymore
+    """
+
     import database as db
     for subdir, dirs, _ in os.walk('assets'):
         for d in dirs:
