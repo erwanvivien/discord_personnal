@@ -10,6 +10,16 @@ import utils
 
 
 async def map(self, message, args):
+    """Maps a command, it saves the mapping in the database and the file
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
     guild_id = message.guild.id
     if not args:
         return await disc.error_message(message, title="Error", desc="No arguments were found")
@@ -55,6 +65,16 @@ async def map(self, message, args):
 
 
 async def unmap(self, message, args):
+    """Unmaps a command, it removes the file and the mapping in the database
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
     guild_id = message.guild.id
     if not args:
         return await disc.error_message(message, title="Error", desc="No arguments were found")
@@ -69,6 +89,16 @@ async def unmap(self, message, args):
 
 
 async def mappings(self, message, args):
+    """Displays all the mappings in discord
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
     guild_id = message.guild.id
     mappings = db.mappings_get(guild_id)
     mappings_text = "\n".join(
@@ -82,6 +112,16 @@ async def mappings(self, message, args):
 
 
 async def define(self, message, args):
+    """Sets the description to a mapping
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
     guild_id = message.guild.id
     if not args:
         return await disc.error_message(message, title="Error", desc="No arguments were found")
@@ -100,10 +140,31 @@ async def define(self, message, args):
 
 
 async def help(self, message, args):
+    """Displays help message
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
     await message.channel.send(embed=disc.HELP_EMBED)
 
 
 async def send(self, message, args):
+    """Sends the image / text to discord
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
+
     guild_id = message.guild.id
     if not args:
         return
@@ -121,6 +182,17 @@ async def send(self, message, args):
 
 
 async def upgrade(self, message, args):
+    """ADMIN COMMAND: Upgrades manually a discord for X more months
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
+
     pass
 
 CMDS = {
