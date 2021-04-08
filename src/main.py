@@ -73,6 +73,8 @@ client = Client()  # Creates a client
 
 
 async def cron():
+    """A 'cron' function that runs infinitely
+    """
     await client.wait_until_ready()
     last = datetime.datetime.now() - datetime.timedelta(weeks=1)
     while True:
