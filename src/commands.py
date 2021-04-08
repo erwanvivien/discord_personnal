@@ -16,9 +16,6 @@ async def map(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
     guild_id = message.guild.id
     if not args:
@@ -71,9 +68,6 @@ async def unmap(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
     guild_id = message.guild.id
     if not args:
@@ -95,9 +89,6 @@ async def mappings(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
     guild_id = message.guild.id
     mappings = db.mappings_get(guild_id)
@@ -118,9 +109,6 @@ async def define(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
     guild_id = message.guild.id
     if not args:
@@ -146,11 +134,27 @@ async def help(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
     await message.channel.send(embed=disc.HELP_EMBED)
+
+
+async def premium_end(self, message, args):
+    """Displays help message
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+    """
+
+    timestamp = db.guild_premium(message.guild.id)
+    if timestamp < date.datetime.now().timestamp():
+        await disc.send_message(message, title="Oops", desc="You don't have any premium subscription for now 😢\n" +
+                                "Check ... if you want to become a premium discord ! ❤")
+    else:
+        date_str = date.datetime.fromtimestamp(
+            timestamp).strftime("%d-%m-%Y (dd/mm/yyyy)")
+        await disc.send_message(message, title="Ending date", desc=date_str)
 
 
 async def send(self, message, args):
@@ -160,9 +164,6 @@ async def send(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
 
     guild_id = message.guild.id
@@ -188,9 +189,6 @@ async def upgrade(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
 
     if not args or len(args) < 2:
@@ -215,9 +213,6 @@ async def upgradeall(self, message, args):
         self {discordClient} -- Needed
         message {discordMessage} -- The actual message that invoked this command
         args {list[str]} -- Everything that is after the command
-
-    Returns:
-        None
     """
 
     if not args or len(args) < 1 or not args[0].isnumeric():
@@ -239,6 +234,8 @@ CMDS = {
     "!!mappings": mappings,
 
     "!!define": define,
+
+    "!!premium": premium_end,
 
     "!!help": help,
     "!!": send,
