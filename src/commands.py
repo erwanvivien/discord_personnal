@@ -195,6 +195,22 @@ async def upgrade(self, message, args):
 
     pass
 
+
+async def upgradeall(self, message, args):
+    """ADMIN COMMAND: Upgrades manually every discords for X months
+
+    Arguments:
+        self {discordClient} -- Needed
+        message {discordMessage} -- The actual message that invoked this command
+        args {list[str]} -- Everything that is after the command
+
+    Returns:
+        None
+    """
+
+    pass
+
+
 CMDS = {
     "!!map": map,
     "!!unmap": unmap,
