@@ -7,6 +7,8 @@ import json
 import os
 # Needed to read date
 import datetime
+# Needed to remove accents from strings
+import unidecode
 
 
 LOG_FILE = "db/log"
@@ -59,6 +61,19 @@ def log(fctname: str, error: str, message: str) -> None:
 
     f.write(log)
     f.close()
+
+
+def sanitize(message: str) -> str:
+    """Removes accents and caps characters, replace them to lower characters
+
+    Arguments:
+        message {str} -- The line / message to sanitize
+
+    Returns:
+        [str] -- The line / message sanitized
+    """
+
+    return unidecode.unidecode(message.lower())
 
 
 def clean_dir(subpath: str, dir: str, db) -> None:
