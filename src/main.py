@@ -52,7 +52,7 @@ class Client(discord.Client):
             # db.guild_premium_add(guild_id, 7)
             # await disc.send_message(message, title="Surprise !", desc="I have seen it's your first time using my bot 😉\n" +
             #                         "Thanks a lot ❤ ! I have decided to give you 7 days of free premium use !\n" +
-            #                         "Enjoy your free mappings !")
+            #                         "Enjoy your free mappings ! 😎")
 
         utils.log("on_message", "Command execution",
                   f"{name} from discord {guild_id} issued {cmd} command. <{args}>")
@@ -78,14 +78,14 @@ async def cron():
     while True:
         if last + datetime.timedelta(days=1) < datetime.datetime.now():
             try:
-                print(" => CLEANING UP <= ")
+                utils.log("cron", "CLEANING UP", "")
                 utils.cleanup()
-                print(" => CLEANED UP <= ")
+                utils.log("cron", "CLEANED UP", "")
             except Exception as e:
                 await disc.report(client, "Error in CRON loop", str(e))
 
             last = datetime.datetime.now()
-        await asyncio.sleep(5 * 60)
+        await asyncio.sleep(5 * 60)  # Waits 5 minutes
 
 
 # Needed for async work
