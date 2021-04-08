@@ -44,9 +44,6 @@ def log(fctname: str, error: str, message: str) -> None:
         fctname {str} -- Function name
         error {str} -- Error tag
         message {str} -- Error message, more specific
-
-    Returns:
-        None
     """
 
     now = datetime.datetime.now()
@@ -83,9 +80,6 @@ def clean_dir(subpath: str, dir: str, db) -> None:
         subpath {str} -- The current path
         dir {str} -- The directory / guild we are checking
         db {import database} -- An imported db, always the same
-
-    Returns:
-        None
     """
 
     try:

@@ -25,14 +25,29 @@ HELP_EMBED.add_field(
 HELP_EMBED.set_thumbnail(url=ICON_URL)
 
 
-def author_name(author, discriminator=True):
-    # Get nick from msg author (discord) if exists
+def author_name(author, discriminator=True) -> str:
+    """Get nick from msg author (discord) if exists
+
+    Arguments:
+        author {discordAuthor} -- The author of a message
+        discriminator {bool} -- If we want the discriminator or not
+
+    Returns:
+        [str] -- The author's name
+    """
+
     if not discriminator:
         return author.display_name
     return f"{author.name}#{author.discriminator}"
 
 
 def create_embed(title, desc, colour=BOT_COLOR, url=HOWTO_URL, icon_url="", footer_url=ICON_URL, footer_text="Personnal"):
+    """Creates a discord embed
+
+    Returns:
+        [discordEmbed] -- The embed
+    """
+
     embed = discord.Embed(title=title,
                           description=desc,
                           colour=colour,
@@ -48,24 +63,30 @@ def create_embed(title, desc, colour=BOT_COLOR, url=HOWTO_URL, icon_url="", foot
 
 async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL,
                         icon_url="", footer_url=ICON_URL, footer_text="Personnal"):
-    # Sends error message to discord (red)
+    """Sends error message to discord (red)
+    """
     return await message.channel.send(embed=create_embed(title, desc, ERROR_COLOR, url, icon_url, footer_url, footer_text))
 
 
 async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL,
                        icon_url="", footer_url=ICON_URL, footer_text="Personnal"):
-    # Sends message to discord (bot_color)
+    """Sends message to discord (bot_color)
+    """
+
     return await message.channel.send(embed=create_embed(title, desc, BOT_COLOR, url, icon_url, footer_url, footer_text))
 
 
 async def send_file(message, filename, content=""):
-    # Sends message to discord (bot_color)
+    """Sends file to discord
+    """
+
     return await message.channel.send(content, file=discord.File(filename))
 
 
 async def edit_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL,
                        icon_url="", footer_url=ICON_URL, footer_text="Personnal"):
-    # Sends message to discord (bot_color)
+    """Edits a message
+    """
     return await message.edit(embed=create_embed(title, desc, BOT_COLOR, url, icon_url, footer_url, footer_text))
 
 
