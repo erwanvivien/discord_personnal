@@ -10,6 +10,8 @@ import utils
 import commands
 import database as db
 
+from discord_slash import SlashCommand
+
 ERRORS = []
 DISC_LNK_DEV = "https://discord.com/api/oauth2/authorize?client_id=819549722422673448&permissions=2147544128&scope=bot%20applications.commands"
 DISC_LNK = "https://discord.com/api/oauth2/authorize?client_id=819549623172726824&permissions=2147544128&scope=bot%20applications.commands"
@@ -50,7 +52,7 @@ class Client(discord.Client):
                       f"Guild {guild_id} has been added")
 
             # db.guild_premium_add(guild_id, 7)
-            # await disc.send_message(message, title="Surprise !", desc="I have seen it's your first time using my bot 😉\n" +
+            # await disc.send_message(message, title="Surprise 🎁", desc="I have seen it's your first time using my bot 😉\n" +
             #                         "Thanks a lot ❤ ! I have decided to give you 7 days of free premium use !\n" +
             #                         "Enjoy your free mappings ! 😎")
 
@@ -70,6 +72,18 @@ class Client(discord.Client):
 
 db.create()  # Will setup the database
 client = Client()  # Creates a client
+
+
+# Declares slash commands through the client
+slash = SlashCommand(client, sync_commands=True)
+guild_ids = [586097749775089664]
+
+
+@slash.slash(name="premium",
+             description="Add months to your premium subscription ❤",
+             guild_ids=guild_ids)
+async def _ping(ctx, months: int):  # Defines a new "context" (ctx) command called "ping."
+    await ctx.send(f"Pong! ({client.latency*1000}ms)")
 
 
 async def cron():
